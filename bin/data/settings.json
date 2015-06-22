@@ -4,6 +4,6 @@
     },
     "OSC": {
         "Client Host": "localhost",
-        "Client Port": "9050"
+        "Client Port": 9050
     }
 }

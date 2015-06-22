@@ -2,6 +2,7 @@
 
 #include "ofMain.h"
 #include "TUIOHandler.h"
+#include "ofxOsc.h"
 
 class ofApp : public ofBaseApp
 {
@@ -14,8 +15,14 @@ public:
     void keyReleased(int key);
 
     // TUIO touch events
-    virtual void tuioPressed(ofTouchEventArgs &touch);
-    virtual void tuioReleased(ofTouchEventArgs &touch);
+    virtual void tuioTouchedDown(ofTouchEventArgs &touch);
+    virtual void tuioTouchedUp(ofTouchEventArgs &touch);
     virtual void tuioDragged(ofTouchEventArgs &touch);
+
+    ofxOscSender oscSender;
+
+    ofTouchEventArgs lastTouchDown;
+    ofTouchEventArgs lastTouchUp;
+    ofTouchEventArgs lastTouchDrag;
 };
 
