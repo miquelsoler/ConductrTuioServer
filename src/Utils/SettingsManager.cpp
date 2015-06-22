@@ -32,6 +32,9 @@ bool SettingsManager::loadSettings()
     // TUIO
     tuioClientPort = json["TUIO"]["Client Port"].asUInt();
 
+    // OSC
+    oscClientHost = json["OSC"]["Client Host"].asString();
+    oscClientPort = json["OSC"]["Client Port"].asUInt();
 
     return parsingSuccessful;
 }

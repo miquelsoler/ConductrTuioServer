@@ -1,5 +1,9 @@
 {
     "TUIO": {
         "Client Port": 3334
+    },
+    "OSC": {
+        "Client Host": "localhost",
+        "Client Port": "9050"
     }
 }

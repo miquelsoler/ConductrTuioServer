@@ -26,6 +26,10 @@ public:
     // TUIO
     unsigned int    tuioClientPort;
 
+    // OSC
+    string          oscClientHost;
+    unsigned int    oscClientPort;
+
 private:
 
     SettingsManager();
