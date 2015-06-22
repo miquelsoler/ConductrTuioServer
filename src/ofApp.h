@@ -11,9 +11,6 @@ public:
     void update();
     void draw();
 
-    void keyPressed(int key);
-    void keyReleased(int key);
-
     // TUIO touch events
     virtual void tuioTouchedDown(ofTouchEventArgs &touch);
     virtual void tuioTouchedUp(ofTouchEventArgs &touch);

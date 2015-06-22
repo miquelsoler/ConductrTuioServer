@@ -58,15 +58,6 @@ void ofApp::draw()
     ofDrawBitmapString(touchUp, 10, 100);
 }
 
-//--------------------------------------------------------------
-void ofApp::keyPressed(int key)
-{
-}
-
-//--------------------------------------------------------------
-void ofApp::keyReleased(int key)
-{
-}
 
 #pragma mark - TUIO touch events
 
