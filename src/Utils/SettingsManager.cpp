@@ -29,12 +29,12 @@ bool SettingsManager::loadSettings()
     bool parsingSuccessful = json.open(FILENAME);
     cout << "PARSING RESULT: " << parsingSuccessful << endl;
 
-    // TUIO
-    tuioClientPort = json["TUIO"]["Client Port"].asUInt();
+    // TUIO Client
+    tuioClientPort = json["TUIO Client"]["Client Port"].asUInt();
 
-    // OSC
-    oscClientHost = json["OSC"]["Client Host"].asString();
-    oscClientPort = json["OSC"]["Client Port"].asUInt();
+    // OSC Sender
+    oscServerHost = json["OSC Sender"]["Server Host"].asString();
+    oscServerPort = json["OSC Sender"]["Server Port"].asUInt();
 
     return parsingSuccessful;
 }

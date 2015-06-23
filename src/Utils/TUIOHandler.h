@@ -13,6 +13,7 @@
 
 #include <stdio.h>
 #include "ofMain.h"
+#include "ofxOsc.h"
 #include "ofxTuioClient.h"
 #include "TuioCursor.h"
 
@@ -26,11 +27,14 @@ public:
     }
 
     void init();
-    
+
     float getDistBetweenCursors(int cursorId1, int cursorId2);
     static ofVec2f tuioToScreenCoords(float tuioX, float tuioY);
 
+    TuioCursor *getCursorForId(int cursorId);
+
     ofxTuioClient               *tuioClient;
+    ofxOscSender                oscSender;
 
     ofEvent<ofTouchEventArgs>    eventTouchDown;
     ofEvent<ofTouchEventArgs>    eventTouchUp;
@@ -39,6 +43,8 @@ public:
 private:
 
     TUIOHandler();
+
+    void buildMessageFromCursor(ofxOscMessage &m, TuioCursor *cursor);
 
     void tuioTouchDown(ofTouchEventArgs &touch);
     void tuioTouchUp(ofTouchEventArgs &touch);

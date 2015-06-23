@@ -10,8 +10,6 @@ void ofApp::setup()
 
     TUIOHandler::getInstance().init();
 
-    oscSender.setup(SettingsManager::getInstance().oscClientHost, SettingsManager::getInstance().oscClientPort);
-
     ofAddListener(TUIOHandler::getInstance().eventTouchDown, this, &ofApp::tuioTouchedDown);
     ofAddListener(TUIOHandler::getInstance().eventTouchUp, this, &ofApp::tuioTouchedUp);
     ofAddListener(TUIOHandler::getInstance().eventTouchDrag, this, &ofApp::tuioDragged);
@@ -29,9 +27,13 @@ void ofApp::update()
 //--------------------------------------------------------------
 void ofApp::draw()
 {
+    ofSetColor(ofColor::white);
+
     // Draw header
-    string header = "Sending OSC messages to " + SettingsManager::getInstance().oscClientHost + ":" + ofToString(SettingsManager::getInstance().oscClientPort);
-    ofDrawBitmapString(header, 10, 20);
+    string header1 = "Receiving TUIO messages from port " + ofToString(SettingsManager::getInstance().tuioClientPort);
+    ofDrawBitmapString(header1, 10, 20);
+//    string header2 = "Sending TUIO messages to " + SettingsManager::getInstance().tuioServerHost + ":" + ofToString(SettingsManager::getInstance().tuioServerPort);
+//    ofDrawBitmapString(header2, 10, 40);
 
     // Draw last touch down
     string touchDown = "Touched down: ";
@@ -39,7 +41,7 @@ void ofApp::draw()
         touchDown += "<NONE>";
     else
         touchDown += "(" + ofToString(lastTouchDown.x) + ", " + ofToString(lastTouchDown.y) + ")";
-    ofDrawBitmapString(touchDown, 10, 60);
+    ofDrawBitmapString(touchDown, 10, 80);
 
     // Draw last drag
     string touchDrag = "Dragged:      ";
@@ -47,7 +49,7 @@ void ofApp::draw()
         touchDrag += "<NONE>";
     else
         touchDrag += "(" + ofToString(lastTouchDrag.x) + ", " + ofToString(lastTouchDrag.y) + ")";
-    ofDrawBitmapString(touchDrag, 10, 80);
+    ofDrawBitmapString(touchDrag, 10, 100);
 
     // Draw last touch up
     string touchUp = "Touched up:   ";
@@ -55,7 +57,9 @@ void ofApp::draw()
         touchUp += "<NONE>";
     else
         touchUp += "(" + ofToString(lastTouchUp.x) + ", " + ofToString(lastTouchUp.y) + ")";
-    ofDrawBitmapString(touchUp, 10, 100);
+    ofDrawBitmapString(touchUp, 10, 120);
+
+//    TUIOHandler::getInstance().tuioClient->drawCursors(0, 255, 0);
 }
 
 
@@ -64,12 +68,6 @@ void ofApp::draw()
 //--------------------------------------------------------------
 void ofApp::tuioTouchedDown(ofTouchEventArgs &touch)
 {
-    ofxOscMessage m;
-    m.setAddress("/server/tuio/touchdown");
-    m.addFloatArg(touch.x);
-    m.addFloatArg(touch.y);
-    oscSender.sendMessage(m);
-
     lastTouchDown = touch;
     lastTouchUp.set(-1, -1);
     lastTouchDrag.set(-1, -1);
@@ -78,23 +76,11 @@ void ofApp::tuioTouchedDown(ofTouchEventArgs &touch)
 //--------------------------------------------------------------
 void ofApp::tuioTouchedUp(ofTouchEventArgs &touch)
 {
-    ofxOscMessage m;
-    m.setAddress("/server/tuio/touchup");
-    m.addFloatArg(touch.x);
-    m.addFloatArg(touch.y);
-    oscSender.sendMessage(m);
-
     lastTouchUp = touch;
 }
 
 //--------------------------------------------------------------
 void ofApp::tuioDragged(ofTouchEventArgs &touch)
 {
-    ofxOscMessage m;
-    m.setAddress("/server/tuio/drag");
-    m.addFloatArg(touch.x);
-    m.addFloatArg(touch.y);
-    oscSender.sendMessage(m);
-
     lastTouchDrag = touch;
 }

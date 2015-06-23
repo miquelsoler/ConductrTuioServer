@@ -23,12 +23,12 @@ public:
         return instance;
     }
 
-    // TUIO
+    // TUIO Client
     unsigned int    tuioClientPort;
 
-    // OSC
-    string          oscClientHost;
-    unsigned int    oscClientPort;
+    // OSC Sender
+    string          oscServerHost;
+    unsigned int    oscServerPort;
 
 private:
 

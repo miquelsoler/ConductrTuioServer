@@ -16,8 +16,6 @@ public:
     virtual void tuioTouchedUp(ofTouchEventArgs &touch);
     virtual void tuioDragged(ofTouchEventArgs &touch);
 
-    ofxOscSender oscSender;
-
     ofTouchEventArgs lastTouchDown;
     ofTouchEventArgs lastTouchUp;
     ofTouchEventArgs lastTouchDrag;

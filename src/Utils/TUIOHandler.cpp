@@ -16,6 +16,17 @@ TUIOHandler::TUIOHandler()
     unsigned int clientPort = SettingsManager::getInstance().tuioClientPort;
     tuioClient = new ofxTuioClient();
     tuioClient->connect(clientPort);
+
+    string oscServerHost = SettingsManager::getInstance().oscServerHost;
+    unsigned int oscServerPort = SettingsManager::getInstance().oscServerPort;
+
+    oscSender.setup(oscServerHost, oscServerPort);
+
+//    string serverHost = SettingsManager::getInstance().tuioServerHost;
+//    unsigned int serverPort = SettingsManager::getInstance().tuioServerPort;
+//
+//    tuioServer = new ofxTuioServer();
+//    tuioServer->start((char *)serverHost.c_str(), serverPort);
 }
 
 ///--------------------------------------------------------------
@@ -26,21 +37,51 @@ void TUIOHandler::init()
     ofAddListener(ofEvents().touchMoved, this, &TUIOHandler::tuioTouchMoved);
 }
 
+void TUIOHandler::buildMessageFromCursor(ofxOscMessage &m, TuioCursor *cursor)
+{
+    m.addIntArg(cursor->getTuioSourceID());
+    m.addIntArg(cursor->getSessionID());
+    m.addIntArg(cursor->getCursorID());
+    m.addFloatArg(cursor->getX());
+    m.addFloatArg(cursor->getY());
+    m.addFloatArg(cursor->getXSpeed());
+    m.addFloatArg(cursor->getYSpeed());
+    m.addFloatArg(cursor->getMotionAccel());
+}
+
 ///--------------------------------------------------------------
 void TUIOHandler::tuioTouchDown(ofTouchEventArgs &touch)
 {
+    TuioCursor *cursor = getCursorForId(touch.id);
+
+    ofxOscMessage m;
+    m.setAddress("/tuio/touchdown");
+    buildMessageFromCursor(m, cursor);
+    oscSender.sendMessage(m);
     ofNotifyEvent(eventTouchDown, touch, this);
 }
 
 ///--------------------------------------------------------------
 void TUIOHandler::tuioTouchUp(ofTouchEventArgs &touch)
 {
+    TuioCursor *cursor = getCursorForId(touch.id);
+
+    ofxOscMessage m;
+    m.setAddress("/tuio/touchup");
+    buildMessageFromCursor(m, cursor);
+    oscSender.sendMessage(m);
     ofNotifyEvent(eventTouchUp, touch, this);
 }
 
 ///--------------------------------------------------------------
 void TUIOHandler::tuioTouchMoved(ofTouchEventArgs &touch)
 {
+    TuioCursor *cursor = getCursorForId(touch.id);
+
+    ofxOscMessage m;
+    m.setAddress("/tuio/drag");
+    buildMessageFromCursor(m, cursor);
+    oscSender.sendMessage(m);
     ofNotifyEvent(eventTouchDrag, touch, this);
 }
 
@@ -66,4 +107,9 @@ ofVec2f TUIOHandler::tuioToScreenCoords(float tuioX, float tuioY)
     return screenCoords;
 }
 
-
+///--------------------------------------------------------------
+TuioCursor *TUIOHandler::getCursorForId(int cursorId)
+{
+    TuioCursor *cursor = tuioClient->client->getTuioCursor(cursorId);
+    return cursor;
+}
