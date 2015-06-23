@@ -59,7 +59,7 @@ void ofApp::draw()
         touchUp += "(" + ofToString(lastTouchUp.x) + ", " + ofToString(lastTouchUp.y) + ")";
     ofDrawBitmapString(touchUp, 10, 120);
 
-//    TUIOHandler::getInstance().tuioClient->drawCursors(0, 255, 0);
+    TUIOHandler::getInstance().tuioClient->drawCursors(0, 255, 0);
 }
 
 
